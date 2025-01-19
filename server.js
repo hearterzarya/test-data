@@ -1,12 +1,9 @@
-import express from 'express';
-import puppeteer from 'puppeteer-extra';
-import bodyParser from 'body-parser';
-import cors from 'cors';
-import fs from 'fs';
-import csvWriter from 'csv-write-stream';
-import StealthPlugin from 'puppeteer-extra-plugin-stealth';
-
-puppeteer.use(StealthPlugin());
+const express = require("express");
+const puppeteer = require("puppeteer");
+const bodyParser = require("body-parser");
+const cors = require("cors");
+const fs = require("fs");
+const csvWriter = require('csv-write-stream');
 
 const app = express();
 app.use(cors());
@@ -149,4 +146,4 @@ app.listen(PORT, () => {
     console.log(`Server running on http://localhost:${PORT}`);
 });
 
-export default app;
+module.exports = app;
