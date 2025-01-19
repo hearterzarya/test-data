@@ -1,9 +1,12 @@
 import express from 'express';
-import puppeteer from 'puppeteer';
+import puppeteer from 'puppeteer-extra';
 import bodyParser from 'body-parser';
 import cors from 'cors';
 import fs from 'fs';
 import csvWriter from 'csv-write-stream';
+import StealthPlugin from 'puppeteer-extra-plugin-stealth';
+
+puppeteer.use(StealthPlugin());
 
 const app = express();
 app.use(cors());
@@ -27,7 +30,7 @@ app.post("/scrape", async (req, res) => {
         console.log("Starting the scraping process...");
 
         const browser = await puppeteer.launch({
-            headless: true,
+            headless: true,  // Ensure it runs in headless mode
             defaultViewport: null,
             args: [
                 "--no-sandbox", 
@@ -36,6 +39,7 @@ app.post("/scrape", async (req, res) => {
                 "--remote-debugging-port=9222"
             ],
         });
+        
 
         for (const keyword of keywords) {
             console.log(`Scraping results for keyword: ${keyword}`);
@@ -126,7 +130,6 @@ const getPageData = async (page) => {
                 // Extract reviews, rating, business hours, and services
                 const reviews = document.querySelector('.PN9vWe') ? document.querySelector('.PN9vWe').innerText : "NONE";
                 const rating = document.querySelector('.ZjTWef') ? document.querySelector('.ZjTWef').innerText : "NONE";
-                // const services = document.querySelector('.OyjIsf') ? document.querySelector('.OyjIsf').innerText : "NONE";
                 const email = document.querySelector('.email-class-selector') ? document.querySelector('.email-class-selector').innerText : "NONE"; // Assuming an email selector
 
                 cardData.push({
@@ -137,7 +140,6 @@ const getPageData = async (page) => {
                     email,
                     reviews,
                     rating,
-                    // services,
                 });
             } catch (e) {
                 console.log(`Error in processing card: ${e}`);
