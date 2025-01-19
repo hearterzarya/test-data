@@ -1,9 +1,12 @@
-const express = require("express");
-const puppeteer = require("puppeteer");
-const bodyParser = require("body-parser");
-const cors = require("cors");
-const fs = require("fs");
-const csvWriter = require('csv-write-stream');
+import express from 'express';
+import puppeteer from 'puppeteer-extra';
+import bodyParser from 'body-parser';
+import cors from 'cors';
+import fs from 'fs';
+import csvWriter from 'csv-write-stream';
+import StealthPlugin from 'puppeteer-extra-plugin-stealth';
+
+puppeteer.use(StealthPlugin());
 
 const app = express();
 app.use(cors());
@@ -27,10 +30,16 @@ app.post("/scrape", async (req, res) => {
         console.log("Starting the scraping process...");
 
         const browser = await puppeteer.launch({
-            headless: true,
+            headless: true,  // Ensure it runs in headless mode
             defaultViewport: null,
-            args: ["--no-sandbox", "--disable-setuid-sandbox"],
+            args: [
+                "--no-sandbox", 
+                "--disable-setuid-sandbox",
+                "--disable-dev-shm-usage",
+                "--remote-debugging-port=9222"
+            ],
         });
+        
 
         for (const keyword of keywords) {
             console.log(`Scraping results for keyword: ${keyword}`);
@@ -146,4 +155,4 @@ app.listen(PORT, () => {
     console.log(`Server running on http://localhost:${PORT}`);
 });
 
-module.exports = app;
+export default app;
