@@ -1,10 +1,11 @@
-const express = require("express");
-const puppeteer = require("puppeteer-extra");
-const bodyParser = require("body-parser");
-const cors = require("cors");
-const fs = require("fs");
-const csvWriter = require('csv-write-stream');
-const StealthPlugin = require("puppeteer-extra-plugin-stealth");
+import express from 'express';
+import puppeteer from 'puppeteer-extra';
+import bodyParser from 'body-parser';
+import cors from 'cors';
+import fs from 'fs';
+import csvWriter from 'csv-write-stream';
+import StealthPlugin from 'puppeteer-extra-plugin-stealth';
+
 puppeteer.use(StealthPlugin());
 
 const app = express();
@@ -123,7 +124,6 @@ const getPageData = async (page) => {
                 // Extract reviews, rating, business hours, and services
                 const reviews = document.querySelector('.PN9vWe') ? document.querySelector('.PN9vWe').innerText : "NONE";
                 const rating = document.querySelector('.ZjTWef') ? document.querySelector('.ZjTWef').innerText : "NONE";
-                // const services = document.querySelector('.OyjIsf') ? document.querySelector('.OyjIsf').innerText : "NONE";
                 const email = document.querySelector('.email-class-selector') ? document.querySelector('.email-class-selector').innerText : "NONE"; // Assuming an email selector
 
                 cardData.push({
@@ -134,7 +134,6 @@ const getPageData = async (page) => {
                     email,
                     reviews,
                     rating,
-                    // services,
                 });
             } catch (e) {
                 console.log(`Error in processing card: ${e}`);
@@ -145,10 +144,9 @@ const getPageData = async (page) => {
     });
 };
 
-
 const PORT = 5010;
 app.listen(PORT, () => {
     console.log(`Server running on http://localhost:${PORT}`);
 });
 
-module.exports = app;
+export default app;
