@@ -90,6 +90,11 @@ app.post("/scrape", async (req, res) => {
     }
 });
 
+// GET API endpoint to test the server
+app.get("/test", (req, res) => {
+    res.json({ message: "The server is running correctly!" });
+});
+
 // Function to extract data from the page
 const getPageData = async (page) => {
     return await page.evaluate(async () => {
