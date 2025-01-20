@@ -30,15 +30,9 @@ app.post("/scrape", async (req, res) => {
         console.log("Starting the scraping process...");
 
         const browser = await puppeteer.launch({
-            headless: true,  // Ensure it runs in headless mode
-            defaultViewport: null,
-            args: [
-                "--no-sandbox", 
-                "--disable-setuid-sandbox",
-                "--disable-dev-shm-usage",
-                "--remote-debugging-port=9222"
-            ],
-        });
+        executablePath: '/usr/bin/google-chrome', // Adjust the path if necessary
+        headless: true,
+    });
         
 
         for (const keyword of keywords) {
