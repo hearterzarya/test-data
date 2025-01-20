@@ -150,7 +150,7 @@ const getPageData = async (page) => {
     });
 };
 
-const PORT = 5010;
+const PORT = 5010 || process.env.PORT;
 app.listen(PORT, () => {
     console.log(`Server running on http://localhost:${PORT}`);
 });
